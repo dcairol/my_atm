@@ -1,6 +1,6 @@
 class BankAccount < ActiveRecord::Base
 
-  belongs_to :user
+  belongs_to :user, dependent: :destroy
   belongs_to :currency
   has_one :card
 
@@ -27,6 +27,10 @@ class BankAccount < ActiveRecord::Base
     raise NotEnoughFunds unless has_enough?(amount)
     save_new_balance(amount)
     amount
+  end
+
+  def current_funds
+    "#{currency.symbol}#{balance}"
   end
 
   private

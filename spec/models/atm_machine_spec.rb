@@ -13,16 +13,16 @@ RSpec.describe AtmMachine, type: :model do
     before(:all){ @atm = AtmMachine.new }
 
     it 'rejects card number and card pin if they are wrong' do
-      expect{ subject.verify_credentials(1234, 1233) }.to raise_error(InvalidAccessError, "Invalid Credentials.")
+      expect{ subject.authenticate(1234, 1233) }.to raise_error(InvalidAccessError, "Invalid Credentials.")
     end
 
     it 'rejects the card if expired' do
       expired_card = create(:expired_card)
-      expect{ subject.verify_credentials(expired_card.number, expired_card.pin) }.to raise_error(InvalidAccessError, "Your card has expired.")
+      expect{ subject.authenticate(expired_card.number, expired_card.pin) }.to raise_error(InvalidAccessError, "Your card has expired.")
     end
 
     it 'grants the user with correct credentials access to his/her account' do
-      subject.verify_credentials(valid_card.number, valid_card.pin)
+      subject.authenticate(valid_card.number, valid_card.pin)
       expect(subject.current_account).to eq(bank_account)
     end
   end
@@ -63,6 +63,6 @@ RSpec.describe AtmMachine, type: :model do
 
   private
   def authenticate
-    subject.verify_credentials(valid_card.number, valid_card.pin)
+    subject.authenticate(valid_card.number, valid_card.pin)
   end
 end

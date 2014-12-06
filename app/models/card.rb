@@ -1,5 +1,5 @@
 class Card < ActiveRecord::Base
-  belongs_to :bank_account
+  belongs_to :bank_account, dependent: :destroy
 
   scope :credit, ->{ where(type: :credit) }
   scope :debit, ->{ where(type: :debit) }

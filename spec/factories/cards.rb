@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :valid_card, class: "Card" do
     card_type "credit"
-    expiration_date (Date.today + 2.weeks)
+    expiration_date 2.weeks.from_now
     number 1234
     pin 1234
   end

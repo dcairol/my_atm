@@ -6,7 +6,7 @@ class AtmMachine < ActiveRecord::Base
     current_account = nil
   end
 
-  def verify_credentials(card_number, pin)
+  def authenticate(card_number, pin)
     card = Card.where(number: card_number, pin: pin).includes(bank_account: [:user]).first
     raise_invalid_credentials unless card
     raise_expired_card if card.expired?

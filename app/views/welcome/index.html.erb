@@ -1,0 +1,27 @@
+<p>Please type in your credit/debit card number and pin (hint: 1234 / 1234)</p>
+
+<div class='table'>
+<%= form_tag(atm_authenticate_path) do %>
+  <div class='row'>
+    <div class='cell'>
+      <%= label_tag :number %>
+    </div>
+    <div class='cell'>
+      <%= text_field_tag :number %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='cell'>
+      <%= label_tag :pin %>
+    </div>
+    <div class='cell'>
+      <%= password_field_tag :pin %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='cell'>
+      <%= submit_tag "Log In" %>
+    </div>
+  </div>
+<% end %>
+</div>
