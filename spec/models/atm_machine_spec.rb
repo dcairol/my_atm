@@ -1,29 +1,68 @@
 require 'rails_helper'
 
 RSpec.describe AtmMachine, type: :model do
-  describe 'verifies user credentials' do
+
+  let(:user){ create(:user) }
+  let(:bank_account){ create(:bank_account, user: user) }
+  let(:valid_card){ create(:valid_card, bank_account: bank_account) }
+
+  subject{ @atm }
+
+  describe 'Authentication' do
 
     before(:all){ @atm = AtmMachine.new }
-    subject{ @atm }
-    let(:user){ build(:user) }
-    let(:bank_account){ build(:bank_account, user: user) }
 
-    it 'rejects card number and card pin in case they are wrong' do
+    it 'rejects card number and card pin if they are wrong' do
       expect{ subject.verify_credentials(1234, 1233) }.to raise_error(InvalidAccessError, "Invalid Credentials.")
     end
 
-    it 'rejects card if expired' do
+    it 'rejects the card if expired' do
       expired_card = create(:expired_card)
       expect{ subject.verify_credentials(expired_card.number, expired_card.pin) }.to raise_error(InvalidAccessError, "Your card has expired.")
     end
 
-    it 'grants the user access to his/her account in case if credentials are correct' do
-      valid_card = create(:valid_card, bank_account: bank_account)
-      expect(subject.verify_credentials(valid_card.number, valid_card.pin)).to be_truthy
+    it 'grants the user with correct credentials access to his/her account' do
+      subject.verify_credentials(valid_card.number, valid_card.pin)
+      expect(subject.current_account).to eq(bank_account)
     end
   end
 
-  describe 'takes requests to withdraw money' do
-    
+  describe 'Money Withdraw' do
+
+    before(:all){ @atm = AtmMachine.new }
+
+    it 'rejects the request if user not authenticated' do
+      expect{ subject.withdraw }.to raise_error(InvalidAccessError, "There isn't a valid user logged in.")
+    end
+
+    it 'accepts the request if user is authenticated' do
+      authenticate
+      expect{ subject.withdraw }.not_to raise_error
+    end
+
+    it 'dispenses the requested amount and changes the balance in the bank account if enough funds available' do
+      to_withdraw = subject.current_account_balance - 500
+      expect{ subject.withdraw(to_withdraw) }.to change{ subject.current_account_balance }.by(-to_withdraw)
+    end
+
+    it 'raises an error if the requested amount is bigger than the available amount' do
+      to_withdraw = subject.current_account_balance + 1
+      expect{ subject.withdraw(to_withdraw) }.to raise_error(NotEnoughFunds)
+    end
+  end
+
+  describe 'Transaction Finalisation' do
+
+    before(:all){ @atm = AtmMachine.new }
+
+    it 'Logs the user out' do
+      subject.finish_transactions
+      expect(subject.current_account).to be_nil
+    end
+  end
+
+  private
+  def authenticate
+    subject.verify_credentials(valid_card.number, valid_card.pin)
   end
 end

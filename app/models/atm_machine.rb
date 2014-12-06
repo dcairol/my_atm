@@ -1,17 +1,25 @@
 class AtmMachine < ActiveRecord::Base
 
-  attr_accessor :current_user
+  attr_accessor :current_account
 
-  def finish_using
-    current_user = nil
+  def finish_transactions
+    current_account = nil
   end
 
   def verify_credentials(card_number, pin)
     card = Card.where(number: card_number, pin: pin).includes(bank_account: [:user]).first
     raise_invalid_credentials unless card
     raise_expired_card if card.expired?
-    current_user = card.user
-    true
+    @current_account = card.bank_account
+  end
+
+  def withdraw(amount=0)
+    raise_user_not_logged_in unless @current_account
+    @current_account.dispense(amount)
+  end
+
+  def current_account_balance
+    current_account.try(:balance)
   end
 
   private
@@ -27,17 +35,12 @@ class AtmMachine < ActiveRecord::Base
     raise InvalidAccessError, "There isn't a valid user logged in."
   end
 
-  def ask_to_finish
-    "Please finish your current transaction before starting a new one."
+  def raise_not_enough_funds
+    raise StandardError
   end
 
-  def show_welcome_message
-    @being_used = true
-    "Welcome! Please enter your credentials."
-  end
-
-  def being_used?
-    @being_used
+  def account_has_no_funds?
+    !current_account.has_funds?
   end
 
 end

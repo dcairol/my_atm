@@ -18,4 +18,26 @@ class BankAccount < ActiveRecord::Base
   def has_funds?
     balance > 0
   end
+
+  def has_enough?(amount)
+    new_balance(amount) > 0
+  end
+
+  def dispense(amount)
+    raise NotEnoughFunds unless has_enough?(amount)
+    save_new_balance(amount)
+    amount
+  end
+
+  private
+  def save_new_balance(amount)
+    self.balance = new_balance(amount)
+    save
+  end
+
+  def new_balance(amount)
+    balance - amount
+  end
 end
+
+class NotEnoughFunds < StandardError; end
