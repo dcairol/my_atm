@@ -1,49 +1,29 @@
 require 'rails_helper'
 
 RSpec.describe AtmMachine, type: :model do
+  describe 'verifies user credentials' do
 
-  describe 'Start transaction' do
     before(:all){ @atm = AtmMachine.new }
     subject{ @atm }
+    let(:user){ build(:user) }
+    let(:bank_account){ build(:bank_account, user: user) }
 
-    describe 'if not being used' do
-      it 'displays a Welcome Message and suggests the user to enter his/her credentials' do
-        expect(subject.start_using).to eq("Welcome! Please enter your credentials.")
-      end
-
-      it 'is marked as being used' do
-        expect(subject.being_used).to be(true)
-      end
+    it 'rejects card number and card pin in case they are wrong' do
+      expect{ subject.verify_credentials(1234, 1233) }.to raise_error(InvalidAccessError, "Invalid Credentials.")
     end
 
-    describe 'if being used' do
-      it 'asks the user to finish the current transaction' do
-        expect(subject.start_using).to eq("Please finish your current transaction before starting a new one.")
-      end
+    it 'rejects card if expired' do
+      expired_card = create(:expired_card)
+      expect{ subject.verify_credentials(expired_card.number, expired_card.pin) }.to raise_error(InvalidAccessError, "Your card has expired.")
     end
-  end
 
-  describe 'Finish transaction' do
-
-    before(:all){ @atm = AtmMachine.new; @atm.start_using; @atm.finish_using }
-    subject{ @atm }
-
-    it 'is available for use' do
-      expect(subject.start_using).to eq("Welcome! Please enter your credentials.")
-    end
-  end
-
-  describe 'verifies user credentials' do
-    # it 'rejects user credentials in case they are wrong' do
-    #   pending
-    # end
-
-    describe 'grants the user access to his/her account in case if credentials are correct' do
-      pending
+    it 'grants the user access to his/her account in case if credentials are correct' do
+      valid_card = create(:valid_card, bank_account: bank_account)
+      expect(subject.verify_credentials(valid_card.number, valid_card.pin)).to be_truthy
     end
   end
 
   describe 'takes requests to withdraw money' do
-    pending
+    
   end
 end

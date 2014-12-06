@@ -11,9 +11,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141206042808) do
+ActiveRecord::Schema.define(version: 20141206050703) do
 
   create_table "atm_machines", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "bank_accounts", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "currency_id"
+    t.integer  "number"
+    t.integer  "balance"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cards", force: true do |t|
+    t.integer  "bank_account_id"
+    t.integer  "pin"
+    t.string   "card_type"
+    t.integer  "number"
+    t.date     "expiration_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "currencies", force: true do |t|
+    t.string   "currency"
+    t.float    "exchange_rate"
+    t.string   "symbol"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.date     "birthdate"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
