@@ -1,4 +1,24 @@
-<div id='current_funds' class='right'>
-  <p>Your current funds:</p>
-  <span><%= @current_account.current_funds %></span>
+<div id='content'>
+  <div id='withdraw'>
+    <p>Please type the amount to withdraw:</p>
+    <%= form_tag(withdraw_url, remote: true) do %>
+      <%= text_field_tag :amount, "", size: 10 %>
+      <%= submit_tag 'Withdraw' %>
+    <% end %>
+  </div>
+
+  <div id='current_funds_info'>
+    <p>Your current funds:</p>
+    <span id='current_funds'><%= @current_account.current_funds %></span>
+  </div>
+
+  <div class='clear'></div>
+
+  <div class='alert' id='error_message'>
+    <p></p>
+  </div>
+
+  <div class='alert' id='success_message'>
+    <p>Success!</p>
+  </div>
 </div>

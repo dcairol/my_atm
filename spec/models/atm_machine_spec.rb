@@ -49,6 +49,11 @@ RSpec.describe AtmMachine, type: :model do
       to_withdraw = subject.current_account_balance + 1
       expect{ subject.withdraw(to_withdraw) }.to raise_error(NotEnoughFunds)
     end
+
+    it 'raises an error if the requested amount is not a number' do
+      a_string = "a string"
+      expect{ subject.withdraw(a_string) }.to raise_error(NotANumberError,"not a number")
+    end
   end
 
   describe 'Transaction Finalisation' do

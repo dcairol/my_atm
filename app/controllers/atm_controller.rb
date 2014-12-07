@@ -1,6 +1,6 @@
 class AtmController < ApplicationController
 
-  before_filter :verify_current_account, only: [ :index, :finish ]
+  before_filter :verify_current_account, except: [ :authenticate ]
 
   def index
   end
@@ -13,6 +13,17 @@ class AtmController < ApplicationController
     rescue InvalidAccessError => e
       flash[:error] = e.message
       redirect_to_login
+    end
+  end
+
+  def withdraw
+    respond_to do |format|
+      begin
+        amount = $atm.withdraw(params[:amount].to_i)
+        format.json{ render json: { success: true, new_balance: $atm.current_account_balance, dispensed: amount } }
+      rescue StandardError => e
+        format.json{ render json: { error: true, message: e.message } }
+      end
     end
   end
 
@@ -33,6 +44,7 @@ class AtmController < ApplicationController
   end
 
   def verify_current_account
+    session[:current_account]=nil unless $atm
     redirect_to_login and return unless current_account
     @current_account = BankAccount.find current_account
   end

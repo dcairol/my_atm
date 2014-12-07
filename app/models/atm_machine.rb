@@ -14,6 +14,7 @@ class AtmMachine < ActiveRecord::Base
   end
 
   def withdraw(amount=0)
+    raise_not_a_number unless amount.is_a? Integer
     raise_user_not_logged_in unless @current_account
     @current_account.dispense(amount)
   end
@@ -35,8 +36,8 @@ class AtmMachine < ActiveRecord::Base
     raise InvalidAccessError, "There isn't a valid user logged in."
   end
 
-  def raise_not_enough_funds
-    raise StandardError
+  def raise_not_a_number
+    raise NotANumberError, "not a number"
   end
 
   def account_has_no_funds?

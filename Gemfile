@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-
+ruby '2.1.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.8'
@@ -37,6 +37,7 @@ gem 'spring',        group: :development
 # gem 'debugger', group: [:development, :test]
 group :test, :development do
   gem 'pry-rails'
+  gem 'pry-debugger'
   gem 'rspec-rails'
   gem 'factory_girl_rails', "~> 4.0"
   gem 'database_cleaner'

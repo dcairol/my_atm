@@ -1,9 +1,50 @@
 // Place all the styles related to the Atm controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-#current_funds{
-  float: right;
-  padding-right: 10px;
+
+#content{
+  margin: 0 auto;
+  width: 800px;
+}
+
+#current_funds_info{
+  float: left;
+  padding-left: 20px;
   width: 220px;
   text-align: right;
+}
+
+#withdraw{
+  width: 400px;
+  float: left;
+}
+
+.clear{
+  clear: both;
+}
+
+@mixin message{
+  margin: 10px 0;
+  font-size:12px;
+  font-weight:bold;
+  text-align:center;
+  display: none;
+}
+
+#success_message{
+  @include message;
+  color:#0c0;
+  background-color:#efe;
+  border:2px solid #0c0;
+}
+
+#error_message{
+  @include message;
+  color:red;
+  background-color:#efe;
+  border:2px solid red;
+}
+
+.alert{
+  width: 650px;
 }

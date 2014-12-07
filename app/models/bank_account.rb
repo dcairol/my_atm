@@ -24,6 +24,7 @@ class BankAccount < ActiveRecord::Base
   end
 
   def dispense(amount)
+    raise NotANumberError, "not a number" unless amount.is_a? Integer
     raise NotEnoughFunds unless has_enough?(amount)
     save_new_balance(amount)
     amount
@@ -45,3 +46,4 @@ class BankAccount < ActiveRecord::Base
 end
 
 class NotEnoughFunds < StandardError; end
+class NotANumberError < StandardError; end

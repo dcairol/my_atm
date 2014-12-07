@@ -18,4 +18,10 @@ RSpec.describe BankAccount, type: :model do
   it 'displays current funds with currency' do
     expect(account.current_funds).to match(/^\$\d+$/)
   end
+
+  describe 'Dispenses money' do
+    it 'raises an error in case amount requested is not a number' do
+      expect{ subject.dispense("a string") }.to raise_error(NotANumberError, "not a number")
+    end
+  end
 end
