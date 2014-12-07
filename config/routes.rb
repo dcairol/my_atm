@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   post 'atm/finish', as: :finish
   post 'atm/withdraw', as: :withdraw
 
+  # the following line is only for testing purposes
+  post 'atm/refill', as: :refill
+
   get 'welcome/index', as: :welcome
   root "welcome#index"
 

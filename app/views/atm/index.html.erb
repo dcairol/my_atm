@@ -12,6 +12,11 @@
     <p>Current funds:</p>
     <span id='current_funds'><%= @current_account.current_funds %></span>
 
+    <div id='refill_info'>
+      <%= link_to "Refill $1000", refill_url, remote: true, id: 'refill', method: :post %>
+      <span>(only for testing purposes)</span>
+    </div>
+
     <div class='form'>
       <%= form_tag(finish_url) do %>
         <%= submit_tag 'Finish' %>

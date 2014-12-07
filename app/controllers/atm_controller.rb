@@ -20,7 +20,7 @@ class AtmController < ApplicationController
     respond_to do |format|
       begin
         amount = $atm.withdraw(params[:amount].to_i)
-        format.json{ render json: { success: true, new_balance: $atm.current_account_funds, dispensed: amount } }
+        format.json{ render json: { success: true, new_balance: $atm.current_account_funds, dispensed: amount, new_amount: $atm.current_account_balance } }
       rescue StandardError => e
         format.json{ render json: { error: true, message: e.message } }
       end
@@ -30,6 +30,14 @@ class AtmController < ApplicationController
   def finish
     nullify_current_account
     redirect_to_login
+  end
+
+  # this is only for testing purposes. didn't even bother to write a test for this
+  def refill
+    $atm.current_account.update balance: $atm.current_account_balance + 1000
+    respond_to do |format|
+      format.json{ render json: {success: true, new_balance: $atm.current_account_funds } }
+    end
   end
 
   private

@@ -11,28 +11,38 @@ jQuery(function($){
       form = $('#withdraw form'),
       success_message = $('#success_message'),
       error_message = $('#error_message'),
+      refill_link = $('#refill_info'),
       message_duration = 5 * 1000,
       display_success_message,
       display_error,
-      on_withdraw_success;
+      on_withdraw_success,
+      add_refill_link,
+      update_balance;
 
     display_error = function(error){
+      success_message.hide();
       error_message.html('<p>The following error has been encountered: ' + error + '.</p>');
-      error_message.fadeIn(500, function(){
-        error_message.fadeOut(message_duration);
-      })
+      error_message.show();
     };
 
     display_success_message = function(dispensed){
+      error_message.hide();
       success_message.html('<p>' + dispensed + ' have been successfully dispensed from your account.</p>');
-      success_message.fadeIn(500, function(){
-        success_message.fadeOut(message_duration);
-      });
+      success_message.show();
     };
 
     on_withdraw_success = function(data){
-      current_funds.text(data.new_balance);
+      update_balance(data.new_balance)
       display_success_message(data.dispensed);
+
+      // The following is for testing purposes only
+      if(data.new_amount == 0){
+        refill_link.show();
+      }
+    };
+
+    update_balance = function update_balance(new_balance){
+      current_funds.text(new_balance);
     };
 
     amount_field.on('keydown', function(e){
@@ -44,6 +54,13 @@ jQuery(function($){
       }
     });
 
+    // Only for testing purposes
+    refill_link
+      .on('ajax:success', function(jqXHR, data, status){
+        update_balance(data.new_balance);
+        refill_link.hide();
+      });
+
     form
       .on('ajax:success', function(jqXHR, data, status){
         if(data.error){
@@ -53,8 +70,8 @@ jQuery(function($){
         }
       })
       .on('ajax:error', function(jqXHR, data, status){
-
+        display_error(data.statusText)
       });
 
   }());
-});
+}); 
