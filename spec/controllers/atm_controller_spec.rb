@@ -48,6 +48,13 @@ RSpec.describe AtmController, :type => :controller do
     end
   end
 
+  describe 'POST finish' do
+    it 'redirects the user to the login page' do
+      post :finish, {}, {current_account: bank_account.id}
+      expect(response).to redirect_to(welcome_path)
+    end
+  end
+
   private
   def parse_json(json)
     JSON.parse(json)

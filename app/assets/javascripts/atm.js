@@ -24,7 +24,7 @@ jQuery(function($){
     };
 
     display_success_message = function(dispensed){
-      success_message.html('<p>' + dispensed + ' have been successfully dispensed.</p>');
+      success_message.html('<p>' + dispensed + ' have been successfully dispensed from your account.</p>');
       success_message.fadeIn(500, function(){
         success_message.fadeOut(message_duration);
       });
@@ -37,7 +37,7 @@ jQuery(function($){
 
     amount_field.on('keydown', function(e){
       var key_code = e.which;
-      if($.inArray(key_code, [46, 8, 9, 27, 13, 110, 190]) !== -1 || (key_code >= 48 && key_code <= 57) ){
+      if($.inArray(key_code, [46, 8, 9, 27, 13, 110, 190, 37, 38, 39, 40]) !== -1 || (key_code >= 48 && key_code <= 57) ){
         return;
       }else{
         e.preventDefault();

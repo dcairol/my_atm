@@ -3,7 +3,7 @@ class AtmMachine < ActiveRecord::Base
   attr_accessor :current_account
 
   def finish_transactions
-    current_account = nil
+    @current_account = nil
   end
 
   def authenticate(card_number, pin)
@@ -21,6 +21,10 @@ class AtmMachine < ActiveRecord::Base
 
   def current_account_balance
     current_account.try(:balance)
+  end
+
+  def current_account_funds
+    current_account.try(:current_funds)
   end
 
   private

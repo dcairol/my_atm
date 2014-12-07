@@ -20,7 +20,7 @@ class BankAccount < ActiveRecord::Base
   end
 
   def has_enough?(amount)
-    new_balance(amount) > 0
+    new_balance(amount) >= 0
   end
 
   def dispense(amount)

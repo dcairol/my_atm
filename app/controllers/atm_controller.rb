@@ -20,7 +20,7 @@ class AtmController < ApplicationController
     respond_to do |format|
       begin
         amount = $atm.withdraw(params[:amount].to_i)
-        format.json{ render json: { success: true, new_balance: $atm.current_account_balance, dispensed: amount } }
+        format.json{ render json: { success: true, new_balance: $atm.current_account_funds, dispensed: amount } }
       rescue StandardError => e
         format.json{ render json: { error: true, message: e.message } }
       end
@@ -28,7 +28,7 @@ class AtmController < ApplicationController
   end
 
   def finish
-    $atm.finish_transactions
+    nullify_current_account
     redirect_to_login
   end
 
@@ -44,8 +44,13 @@ class AtmController < ApplicationController
   end
 
   def verify_current_account
-    session[:current_account]=nil unless $atm
+    nullify_current_account unless $atm
     redirect_to_login and return unless current_account
     @current_account = BankAccount.find current_account
+  end
+
+  def nullify_current_account
+    $atm = nil
+    session[:current_account] = nil
   end
 end
