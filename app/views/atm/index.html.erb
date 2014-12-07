@@ -1,7 +1,7 @@
 <div id='content'>
   <div id='withdraw'>
     <p>Please type the amount to withdraw:</p>
-    <%= form_tag(withdraw_url, remote: true) do %>
+    <%= form_tag(withdraw_url, remote: true, 'data-type' => 'json') do %>
       <%= text_field_tag :amount, "", size: 10 %>
       <%= submit_tag 'Withdraw' %>
     <% end %>

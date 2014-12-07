@@ -24,14 +24,14 @@ class BankAccount < ActiveRecord::Base
   end
 
   def dispense(amount)
-    raise NotANumberError, "not a number" unless amount.is_a? Integer
-    raise NotEnoughFunds unless has_enough?(amount)
+    raise NotANumberError, "Not a number" unless amount.is_a? Integer
+    raise NotEnoughFunds, "Not enough funds" unless has_enough?(amount)
     save_new_balance(amount)
-    amount
+    prepend_currency(amount)
   end
 
   def current_funds
-    "#{currency.symbol}#{balance}"
+    prepend_currency(balance)
   end
 
   private
@@ -42,6 +42,10 @@ class BankAccount < ActiveRecord::Base
 
   def new_balance(amount)
     balance - amount
+  end
+
+  def prepend_currency(amount)
+    "#{currency.symbol}#{amount}"
   end
 end
 

@@ -3,6 +3,7 @@
 var MY_APP = MY_APP || {};
 
 jQuery(function($){
+
   MY_APP.ATM = (function(){
 
     var amount_field = $('#amount'),
@@ -16,7 +17,7 @@ jQuery(function($){
       on_withdraw_success;
 
     display_error = function(error){
-      error_message.html('<p>The following error has been encountered ' + error + '</p>');
+      error_message.html('<p>The following error has been encountered: ' + error + '.</p>');
       error_message.fadeIn(500, function(){
         error_message.fadeOut(message_duration);
       })
@@ -43,13 +44,17 @@ jQuery(function($){
       }
     });
 
-    form.on('ajax:success', function(data){
-      if(data.error){
-        display_error(data.error);
-      }else if(data.success){
-        on_withdraw_success(data)
-      }
-    });
+    form
+      .on('ajax:success', function(jqXHR, data, status){
+        if(data.error){
+          display_error(data.message);
+        }else if(data.success){
+          on_withdraw_success(data)
+        }
+      })
+      .on('ajax:error', function(jqXHR, data, status){
+
+      });
 
   }());
 });

@@ -21,7 +21,7 @@ RSpec.describe BankAccount, type: :model do
 
   describe 'Dispenses money' do
     it 'raises an error in case amount requested is not a number' do
-      expect{ subject.dispense("a string") }.to raise_error(NotANumberError, "not a number")
+      expect{ subject.dispense("a string") }.to raise_error(NotANumberError, "Not a number")
     end
   end
 end
