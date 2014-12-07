@@ -1,12 +1,14 @@
 == README
 
+View the app in production https://my-atm.herokuapp.com/
+
+
 Assumptions made:
 
 * Users can have several bank accounts and credit cards to be able to withdraw money from them.
 * Users can withdraw as much money available in their bank account.
-* There is a functionality *only for testing purposes* to reload $1000, just to be able to continue using the ATM. ^^
+* There is a functionality *only for testing purposes* to reload $1000, just to be able to continue using the ATM.
 
-View the app in production https://my-atm.herokuapp.com/
 
 To run locally, follow these steps:
 
@@ -24,8 +26,12 @@ To run locally, follow these steps:
 *  bundle exec rake db:seed
 *  bundle exec rails s
 
+
 To run RSpec models / controllers tests:
+
 *  bundle exec rake spec:models
 *  bundle exec rake spec:controllers
+
 OR run all tests
+
 *  bundle exec rake spec
