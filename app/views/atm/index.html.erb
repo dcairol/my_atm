@@ -1,21 +1,16 @@
 <div id='content'>
+
+
+  <h1>Account No. <%= @current_account.number %></h1>
+
+  <p>Current funds: <span id='current_funds'><%= @current_account.current_funds %></span></p>
   <div id='withdraw'>
-    <p>Please type in the amount to withdraw:</p>
+    <p>Please type in the amount to withdraw</p>
     <%= form_tag(withdraw_url, remote: true, 'data-type' => 'json') do %>
       <%= text_field_tag :amount, "", size: 10 %>
       <%= submit_tag 'Withdraw' %>
+      <%= image_tag 'ajax-loader.gif', class: 'ajax-loader' %>
     <% end %>
-  </div>
-
-  <div id='current_funds_info'>
-    <span>Account No. <%= @current_account.number %></span>
-    <p>Current funds:</p>
-    <span id='current_funds'><%= @current_account.current_funds %></span>
-
-    <div id='refill_info'>
-      <%= link_to "Refill $1000", refill_url, remote: true, id: 'refill', method: :post %>
-      <span>(only for testing purposes)</span>
-    </div>
 
     <div class='form'>
       <%= form_tag(finish_url) do %>
@@ -24,11 +19,18 @@
     </div>
   </div>
 
-  <div class='clear'></div>
-
-  <div class='alert' id='error_message'>
+  <div id='refill_info'>
+    <p>
+      <%= link_to "Refill +1000", refill_url, remote: true, id: 'refill', method: :post %>
+      (only for testing purposes)
+    </p>
   </div>
 
-  <div class='alert' id='success_message'>
+  <div class='clear'></div>
+
+  <div class='alert' id='withdraw_error'>
+  </div>
+
+  <div class='alert' id='withdraw_success'>
   </div>
 </div>

@@ -4,17 +4,26 @@
   <title>Atm</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-<% if flash[:error] %>
-  <div>
-    <%= flash[:error] %>
-  </div>
-<% end %>
+<div class='main-content'>
 
-<%= yield %>
+  <% if flash[:error] %>
+    <div id='error_message'>
+      <%= flash[:error] %>
+    </div>
+  <% end %>
+
+  <%= yield %>
+</div>
 
 </body>
 </html>

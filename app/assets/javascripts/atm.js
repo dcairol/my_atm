@@ -9,10 +9,12 @@ jQuery(function($){
     var amount_field = $('#amount'),
       current_funds = $('#current_funds'),
       form = $('#withdraw form'),
-      success_message = $('#success_message'),
-      error_message = $('#error_message'),
+      success_message = $('#withdraw_success'),
+      error_message = $('#withdraw_error'),
       refill_link = $('#refill_info'),
+      ajax_loader = $('.ajax-loader'),
       message_duration = 5 * 1000,
+      show_loader, hide_loader,
       display_success_message,
       display_error,
       on_withdraw_success,
@@ -34,11 +36,6 @@ jQuery(function($){
     on_withdraw_success = function(data){
       update_balance(data.new_balance)
       display_success_message(data.dispensed);
-
-      // The following is for testing purposes only
-      if(data.new_amount == 0){
-        refill_link.show();
-      }
     };
 
     update_balance = function update_balance(new_balance){
@@ -54,11 +51,18 @@ jQuery(function($){
       }
     });
 
+    hide_loader = function(){
+      ajax_loader.hide();
+    };
+
+    show_loader = function(){
+      ajax_loader.show();
+    };
+
     // Only for testing purposes
     refill_link
       .on('ajax:success', function(jqXHR, data, status){
         update_balance(data.new_balance);
-        refill_link.hide();
       });
 
     form
@@ -71,7 +75,9 @@ jQuery(function($){
       })
       .on('ajax:error', function(jqXHR, data, status){
         display_error(data.statusText)
-      });
+      })
+      .on('ajax:beforeSend',show_loader)
+      .on('ajax:complete',hide_loader);
 
   }());
 }); 

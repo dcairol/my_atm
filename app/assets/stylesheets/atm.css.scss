@@ -2,18 +2,6 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#content{
-  margin: 20px auto;
-  width: 800px;
-}
-
-#current_funds_info{
-  float: left;
-  padding-left: 20px;
-  width: 220px;
-  text-align: right;
-}
-
 #withdraw{
   width: 400px;
   float: left;
@@ -28,31 +16,56 @@
   font-size:12px;
   font-weight:bold;
   text-align:center;
-  display: none;
 }
 
-#success_message{
+@mixin success_box{
   @include message;
   color:#0c0;
   background-color:#efe;
   border:2px solid #0c0;
 }
 
-#error_message{
+@mixin error_box{
   @include message;
   color:red;
   background-color:#efe;
   border:2px solid red;
 }
 
+#withdraw_error{
+  @include error_box;
+}
+
+#withdraw_success{
+  @include success_box;
+}
+
+#error_message{
+  @include error_box;
+  padding: 5px 5px;
+}
+
 .alert{
   width: 650px;
+  display: none;
 }
 
 .form{
   padding-top: 10px;
 }
 
-#refill_info{
+.ajax-loader{
   display: none;
+}
+
+.main-content{
+  margin: 20px auto;
+  width: 800px;
+}
+
+#refill_info{
+  float: left;
+  padding-left: 20px;
+  width: 280px;
+  text-align: right;
 }
