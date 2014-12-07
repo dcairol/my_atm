@@ -4,8 +4,6 @@ ruby '2.0.0'
 gem 'pg'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.8'
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
@@ -42,4 +40,8 @@ group :test, :development do
   gem 'database_cleaner'
   gem 'faker'
   gem 'shoulda-matchers'
+
+  # Use sqlite3 as the database for Active Record
+  gem 'sqlite3'
+  
 end
