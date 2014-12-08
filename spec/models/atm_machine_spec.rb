@@ -1,16 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe AtmMachine, type: :model do
+RSpec.describe AtmMachine, type: :class do
 
   let(:user){ create(:user) }
   let(:bank_account){ create(:bank_account, user: user) }
   let(:valid_card){ create(:valid_card, bank_account: bank_account) }
 
-  subject{ @atm }
+  subject{ AtmMachine }
 
   describe 'Authentication' do
 
-    before(:all){ @atm = AtmMachine.new }
+    after(:all){ AtmMachine.finish_transactions }
 
     it 'rejects card number and card pin if they are wrong' do
       expect{ subject.authenticate(1234, 1233) }.to raise_error(InvalidAccessError, "Invalid Credentials.")
@@ -29,7 +29,7 @@ RSpec.describe AtmMachine, type: :model do
 
   describe 'Money Withdraw' do
 
-    before(:all){ @atm = AtmMachine.new }
+    after(:all){ AtmMachine.finish_transactions }
 
     it 'rejects the request if user not authenticated' do
       expect{ subject.withdraw }.to raise_error(InvalidAccessError, "There isn't a valid user logged in.")
@@ -58,9 +58,8 @@ RSpec.describe AtmMachine, type: :model do
 
   describe 'Transaction Finalisation' do
 
-    before(:all){ @atm = AtmMachine.new }
-
     it 'Logs the user out' do
+      subject.authenticate(valid_card.number, valid_card.pin)
       subject.finish_transactions
       expect(subject.current_account).to be_nil
     end
@@ -68,6 +67,6 @@ RSpec.describe AtmMachine, type: :model do
 
   private
   def authenticate
-    subject.authenticate(valid_card.number, valid_card.pin)
+    AtmMachine.authenticate(valid_card.number, valid_card.pin)
   end
 end

@@ -3,8 +3,9 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  def logged_in?
-
+  protected
+  def change_current_account_if_necessary
+    session[:current_account] = AtmMachine.current_account.try(:id)
   end
 
   def current_account

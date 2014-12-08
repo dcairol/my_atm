@@ -1,6 +1,6 @@
 class WelcomeController < ApplicationController
 
-  before_filter :redirect_to_atm_if_logged
+  before_filter :change_current_account_if_necessary, :redirect_to_atm_if_logged
 
   def index
   end

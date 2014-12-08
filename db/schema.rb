@@ -11,12 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141206050703) do
-
-  create_table "atm_machines", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+ActiveRecord::Schema.define(version: 20141208022007) do
 
   create_table "bank_accounts", force: true do |t|
     t.integer  "user_id"
