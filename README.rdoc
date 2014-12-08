@@ -7,7 +7,8 @@ Assumptions made:
 
 * Users can have several bank accounts and credit cards to be able to withdraw money from them.
 * Users can withdraw as much money available in their bank account.
-* There is a functionality *only for testing purposes* to reload $1000, just to be able to continue using the ATM.
+* There is a functionality to reload $1000, to be able to continue using the ATM even when all the money has been withdrawn. This is for testing purposes.
+* once a user authenticates into the ATM, it has immediate access to it from other browsers.
 
 
 To run locally, follow these steps:
