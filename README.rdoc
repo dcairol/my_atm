@@ -1,28 +1,38 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+View the app in production https://my-atm.herokuapp.com/
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Assumptions made:
+
+* Users can have several bank accounts and credit cards to be able to withdraw money from them.
+* Users can withdraw as much money available in their bank account.
+* There is a functionality *only for testing purposes* to reload $1000, just to be able to continue using the ATM.
+
+
+To run locally, follow these steps:
+
+*  git clone https://github.com/dcairol/my_atm.git
+*  cd my_atm
+*  Install RVM http://rvm.io/rvm/install
+*  rvm install 2.0.0-p481
+*  rvm gemset create atm
+*  rvm rvmrc create 2.0.0-p481@atm
+*  cd ..
+*  cd my_atm
+*  cp config/database.yml.sample config/database.yml
+*  bundle install
+*  bundle exec rake db:create
+*  bundle exec rake db:migrate
+*  bundle exec rake db:seed
+*  bundle exec rails s
+
+
+To run RSpec models / controllers tests:
+
+*  bundle exec rake spec:models
+*  bundle exec rake spec:controllers
+
+OR run all tests
+
+*  bundle exec rake spec
