@@ -20,6 +20,7 @@ To run locally, follow these steps:
 *  rvm rvmrc create 2.0.0-p481@atm
 *  cd ..
 *  cd my_atm
+*  cp config/database.yml.sample config/database.yml
 *  bundle install
 *  bundle exec rake db:create
 *  bundle exec rake db:migrate
